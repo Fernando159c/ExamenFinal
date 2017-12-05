@@ -95,7 +95,7 @@ public class FormularioCompra extends javax.swing.JFrame {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/tarjeta.png"))); // NOI18N
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 60, -1, -1));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon("C:\\unifacil\\trabajos\\java\\lpoo172-s22ejercicio01\\src\\main\\resources\\img\\credit-cards-logos.png")); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/credit-cards-logos.png"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 290, 90));
 
         pack();
