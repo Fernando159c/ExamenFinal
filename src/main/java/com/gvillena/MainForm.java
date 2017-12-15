@@ -58,7 +58,7 @@ public class MainForm extends javax.swing.JFrame {
         JsonWriter writer;
         try         
         {
-            writer = new JsonWriter(new FileWriter("D:\\jsonMoviles2.txt"));
+            writer = new JsonWriter(new FileWriter("C:\\jsonMoviles2.txt"));
             writer.jsonValue(json);
             writer.flush();
         } catch (IOException ex) {
@@ -147,8 +147,8 @@ public class MainForm extends javax.swing.JFrame {
         // 2
         try 
         {
-            scannerClaro = new Scanner(new FileReader("D:\\jsonClaro.txt"));                                    
-            scannerPlanes = new Scanner(new FileReader("D:\\jsonPlanes.txt"));
+            scannerClaro = new Scanner(new FileReader("C:\\jsonClaro.txt"));                                    
+            scannerPlanes = new Scanner(new FileReader("C:\\jsonPlanes.txt"));
             
             StringBuilder sbClaro = new StringBuilder();                         
             

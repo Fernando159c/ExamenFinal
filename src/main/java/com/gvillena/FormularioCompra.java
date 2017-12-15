@@ -5,6 +5,14 @@
  */
 package com.gvillena;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Administrator
@@ -37,19 +45,22 @@ public class FormularioCompra extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txtTarjeta = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        txtCcv = new javax.swing.JTextField();
+        txtMonto = new javax.swing.JTextField();
         mes = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        lMonto = new javax.swing.JLabel();
+        txtCcv = new javax.swing.JTextField();
 
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        ltitulo.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         ltitulo.setText("PAGO CON TARJETA");
-        getContentPane().add(ltitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, -1));
+        getContentPane().add(ltitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
         jLabel1.setText("Aceptamos:");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 52, -1, -1));
@@ -68,19 +79,19 @@ public class FormularioCompra extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, -1));
         getContentPane().add(txtTitular, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 130, -1));
 
-        jLabel4.setText("Fecha de caducidad");
+        jLabel4.setText("Fecha de caducidad:");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, 20));
         getContentPane().add(txtTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 250, 130, -1));
 
         jLabel5.setText("CCV(Codigo de Seguridad) :");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, -1, 20));
 
-        txtCcv.addActionListener(new java.awt.event.ActionListener() {
+        txtMonto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCcvActionPerformed(evt);
+                txtMontoActionPerformed(evt);
             }
         });
-        getContentPane().add(txtCcv, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 290, 130, -1));
+        getContentPane().add(txtMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, 130, -1));
         getContentPane().add(mes, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 330, 60, -1));
 
         jButton1.setBackground(new java.awt.Color(0, 204, 255));
@@ -98,12 +109,22 @@ public class FormularioCompra extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/credit-cards-logos.png"))); // NOI18N
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 290, 90));
 
+        lMonto.setText("Monto:");
+        getContentPane().add(lMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 370, 130, 20));
+
+        txtCcv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCcvActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtCcv, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 290, 130, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtCcvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCcvActionPerformed
+    private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtCcvActionPerformed
+    }//GEN-LAST:event_txtMontoActionPerformed
 
     private void anioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anioActionPerformed
         // TODO add your handling code here:
@@ -111,9 +132,49 @@ public class FormularioCompra extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
-        Resultado resultado = new Resultado();
+        
+        //alamcenamos iformacion
+        String titular = txtTitular.getText();
+        String tarjeta = txtTarjeta.getText();
+        String ccv = txtMonto.getText();
+        String numeroMes = mes.getText();
+        String numeroAnio = anio.getText();
+        String monto = txtMonto.getText();
+        
+         // Creando Objeto Gson
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        
+        // Creando objetoEjemplo de clase ClaseEjemplo
+        Transaccion transaccion = new Transaccion();
+        
+        // Asignando valores
+        transaccion.setTitular(titular);
+        transaccion.setTarjeta(tarjeta);
+        transaccion.setCcv(ccv);
+        transaccion.setMes(numeroMes);
+        transaccion.setAnio(numeroAnio);
+        transaccion.setMonto(monto);
+        
+        // Convirtiendo objetoEjemplo en formato JSON
+        String json = gson.toJson(transaccion);
+        System.out.println(json);        
+                
+        try {
+            // Guardando en archivo (*.txt)
+            String ruta = "C://json.txt";
+            FileWriter writer = new FileWriter(new File(ruta));
+            writer.append(json);            
+            writer.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(FormularioCompra.class.getName()).log(Level.SEVERE, null, ex);
+        }       
+       Resultado resultado = new Resultado(transaccion);
         resultado.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtCcvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCcvActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCcvActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,9 +222,11 @@ public class FormularioCompra extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lMonto;
     private javax.swing.JLabel ltitulo;
     private javax.swing.JTextField mes;
     private javax.swing.JTextField txtCcv;
+    private javax.swing.JTextField txtMonto;
     private javax.swing.JTextField txtTarjeta;
     private javax.swing.JTextField txtTitular;
     // End of variables declaration//GEN-END:variables
